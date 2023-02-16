@@ -8,17 +8,6 @@ const factory = require('./handlerFactory');
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.tourId);
 
-  // const product = await stripe.products.create({
-  //   // price: tour.price * 100,
-  //   // quantity: 1,
-  //   // currency: 'usd',
-  //   // name: `${tour.name} Tour`,
-  //   // description: tour.summary,
-  //   // images: [
-  //   //   `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
-  //   // ],
-  // });
-
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
@@ -55,9 +44,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
-  const price = (session.amout_total * 1) / 100;
+  const price = session.amout_total / 100;
 
-  await Booking.create({ tour, user, price });
+  await Booking.create({ tour, user });
 };
 
 exports.webhookCheckout = (req, res, next) => {
