@@ -8,16 +8,16 @@ const factory = require('./handlerFactory');
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.tourId);
 
-  const product = await stripe.products.create({
-    // price: tour.price * 100,
-    // quantity: 1,
-    // currency: 'usd',
-    // name: `${tour.name} Tour`,
-    // description: tour.summary,
-    // images: [
-    //   `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
-    // ],
-  });
+  // const product = await stripe.products.create({
+  //   // price: tour.price * 100,
+  //   // quantity: 1,
+  //   // currency: 'usd',
+  //   // name: `${tour.name} Tour`,
+  //   // description: tour.summary,
+  //   // images: [
+  //   //   `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
+  //   // ],
+  // });
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
