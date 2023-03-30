@@ -4,20 +4,21 @@ const htmlToText = require('html-to-text');
 
 module.exports = class Email {
   constructor(user, url) {
+    this.from = process.env.EMAIL_FROM;
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = process.env.EMAIL_FROM;
   }
 
   newTransport() {
     // if (process.env.NODE_ENV === 'production') {
     //Sendgrid
     return nodemailer.createTransport({
-      service: 'SendGrid',
+      service: 'gmail',
+      secure: false,
       auth: {
-        user: process.env.SENDGRID_USERNAME,
-        pass: process.env.SENDGRID_PASSWORD,
+        user: process.env.EMAIL_FROM,
+        pass: 'test123',
       },
     });
 
